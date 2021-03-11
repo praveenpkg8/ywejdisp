@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 
 
 
-const LoginPage = () => {
+const Signup = () => {
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
@@ -123,4 +123,4 @@ const LoginPage = () => {
 
 }
 
-export default LoginPage;
+export default Signup;
