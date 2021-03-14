@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
+import categoryReducer from '../features/categorySlice';
+import materialPriceReducer from '../features/materialPriceSlice';
 
 
 const saveToLocalStorage = (state) => {
@@ -30,7 +32,9 @@ const preloadedState = loadFromLocalStorage();
 
 const store = configureStore({
     reducer: {
-        user: userReducer
+        user: userReducer,
+        categoryList: categoryReducer,
+        material: materialPriceReducer,
     }, preloadedState  
 } )
 store.subscribe(() => saveToLocalStorage(store.getState()))
