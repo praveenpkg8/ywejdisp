@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect } from "react";
 import { Modal, Button, Form, Dropdown } from "react-bootstrap";
-import { fetchAllCategories } from "../Category/Category"
+import {  useSelector } from 'react-redux';
+import { selectCategoryList } from '../../features/categorySlice';
 
 export default function AddStock() {
   const [show, setShow] = useState(false);
+  const categoryList = useSelector(selectCategoryList);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -12,22 +14,21 @@ export default function AddStock() {
   const [weight, setWeight] = useState('');
   const [wastage, setWastage] = useState('');
   const [makingCharge, setMakingCharge] = useState('');
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
   const [category_id, setCategory] = useState('');
 
 
 
 
   const categoryItem = categories.map((item) =>
-    <option key={item.id} value={item.id} data-key={item.id} >{item.name}</option>
+    <option key={item.id} value={item.id} data-key={item.id} >{`${item.name} - ${item.material}`}</option>
   );
 
   useEffect(() => {
-    const categoryList = fetchAllCategories();
-    categoryList.then(_categoryList => {
-      setCategories(_categoryList);
-      setCategory(_categoryList[0].id);
-    })
+    setCategories(categoryList);
+    if (categoryList.length) {
+      setCategory(categoryList[0].id);
+    }
   }, []);
 
 
@@ -35,10 +36,11 @@ export default function AddStock() {
   const addStock = async () => {
     URL = '/api/V1/ornament'
     const ornament = {
-      'name': name,
-      'weight': weight,
-      'wastage': wastage,
-      'making_charge': makingCharge
+      name: name,
+      weight: weight,
+      wastage: wastage,
+      making_charge: makingCharge,
+      category_id: category_id,
     }
     const setting = {
       method: 'POST',

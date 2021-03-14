@@ -1,16 +1,17 @@
 import React from "react";
-import { Nav } from "react-bootstrap";
+
+import { Nav, ListGroup, } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 const VerticalNav = () => {
   return (
     <>
-      <Nav defaultActiveKey="/home" className="flex-column">
-        <Nav.Link href="/home">Active</Nav.Link>
-        <Nav.Link eventKey="link-1">Link</Nav.Link>
-        <Nav.Link eventKey="link-2">Link</Nav.Link>
-        <Nav.Link eventKey="disabled" disabled>
-          Disabled
-        </Nav.Link>
+      <Nav className="flex-column" >
+        <ListGroup variant="flush">
+          <ListGroup.Item><Link style={{ textDecoration: 'none' }} to="/category">Category</Link></ListGroup.Item>
+          <ListGroup.Item><Link style={{ textDecoration: 'none' }} to="/stocks">Stocks</Link></ListGroup.Item>
+          <ListGroup.Item><Link style={{ textDecoration: 'none' }} to="/cart">Cart</Link></ListGroup.Item>
+        </ListGroup>
       </Nav>
     </>
   );

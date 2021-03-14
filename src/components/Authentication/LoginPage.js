@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, selectUser } from '../../features/userSlice';
 import { Redirect } from 'react-router-dom';
@@ -12,6 +12,7 @@ const LoginPage = () => {
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [_login, setLogin] = useState(false);
+
 
 
     const state = store.getState();

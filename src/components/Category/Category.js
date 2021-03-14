@@ -1,80 +1,64 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import CategoryItem from "./CategoryItem"
+import AddCategory from "./AddCategory";
 
 const URL = "/api/V1/category";
 
 export const fetchAllCategories = async () => {
-  try{
+  try {
     const response = await fetch(URL);
     const data = await response.json();
     const categories = await data.categories;
+    console.log(categories)
     return categories
-  }catch(e){
+  } catch (e) {
     log.info(e)
   }
-  
-  
+
+
 };
 
-class Category extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      categories: [],
-    };
+
+const Category = () => {
+
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const categoryPromise = fetchAllCategories();
+    categoryPromise.then(categories => {
+      setCategories(categories);
+    });
+  }, []);
+
+  const deleteItem = (id) => {
+    setCategories(categories.filter(el => el.id != id));
   }
 
-  componentDidMount() {
-    this.getAllCategories();
-  }
+  const tableItem = categories.map((object) => (
+    <CategoryItem
+      key={object.id}
+      object={{ object }}
+      deleteItem={deleteItem}
+    />
+  ));
 
-  getAllCategories = async () => {
-    try{
-      const response = await fetch(URL);
-      const data = await response.json();
-      const categories = data.categories;
-      this.setState({
-        categories: categories,
-      });
-    }catch{}
-    
-    
-  };
-
-
-  deleteItem = (id) => {
-    const { categories } = this.state;
-    this.setState({
-        categories: categories.filter( el => el.id != id)
-    })
-  }
-
-  render() {
-    const { categories } = this.state;
-    const tableItem = categories.map((object) => (
-      <CategoryItem 
-      key={object.id} 
-      object={{ object }} 
-      deleteItem={this.deleteItem}
-      />
-    ));
-    return (
-      <>
-        <table className="table">
-          <thead className="thead-dark">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>{tableItem}</tbody>
-        </table>
-      </>
-    );
-  }
+  return (
+    <>
+      <AddCategory />
+      <table className="table">
+        <thead className="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Material</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>{tableItem}</tbody>
+      </table>
+    </>
+  );
 }
 
 export default Category;

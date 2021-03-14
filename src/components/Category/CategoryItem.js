@@ -6,6 +6,8 @@ import UpdateCategory from './UpdateCategory'
 const CategoryItem = (props) => {
   const { object } = props.object;
   const [name, setName] = useState(object.name);
+  const [material, setMaterial] = useState(object.material);
+
   const { deleteItem } = props;
   const setting = {
     method: "DELETE",
@@ -40,6 +42,7 @@ const CategoryItem = (props) => {
     <tr>
       <th scope="row">{object.id}</th>
       <td>{name}</td>
+      <td>{material}</td>
       <td><UpdateCategory object={object} _updateCategory={_updateCategory} /></td>
       <td>{trash}</td>
     </tr>

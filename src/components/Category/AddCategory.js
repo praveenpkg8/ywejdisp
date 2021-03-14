@@ -8,13 +8,26 @@ export default function UpdateStock() {
   const handleShow = () => setShow(true);
 
   const [name, setName] = useState('');
+  const [material, setMaterial] = useState('GOLD');
 
+  const flushState = () => {
+    setName('');
+    setMaterial('GOLD');
+  }
+
+
+  const materialList = [{id:'GOLD', name: 'GOLD'}, {id:'SILVER', name: 'SILVER'}, {id:'DAIMOND', name: 'DAIMOND'}, {id:'PLATINUM', name: 'PLATINUM'}]
+
+  const materialItem = materialList.map((item) =>
+    <option key={item.id} value={item.id} >{item.name}</option>
+  );
 
 
   const addCategory = async() => {
     URL = '/api/V1/category'
     const category = {
       'name': name,
+      material: material
     }
     const setting = {
       method: 'POST',
@@ -29,7 +42,7 @@ export default function UpdateStock() {
     if (response.status === 200 ){
       handleClose()
     }
-    }catch{}
+    }catch{};
     handleClose()
   }
 
@@ -53,6 +66,12 @@ export default function UpdateStock() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+            </Form.Group>
+            <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Label>Material </Form.Label>
+              <Form.Control as="select" onChange={(e) => setMaterial(e.target.value)}>
+                {materialItem}
+              </Form.Control>
             </Form.Group>
           </Form>
         </Modal.Body>

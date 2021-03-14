@@ -1,52 +1,70 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit} from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import {  useSelector } from 'react-redux';
+import { selectCategoryList } from '../../features/categorySlice';
 
-export default function UpdateStock(props) {
-  const { object, _updateStock } = props
+
+
+function UpdateStock(props) {
+
+  const { object, _updateStock } = props;
+  const categoryList = useSelector(selectCategoryList);
+
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setCategories(categoryList);
+    setShow(true)
+  };
 
   const [name, setName] = useState(object.name);
   const [weight, setWeight] = useState(object.weight);
   const [wastage, setWastage] = useState(object.wastage);
   const [makingCharge, setMakingCharge] = useState(object.making_charge);
+  const [category_id, setCategory] = useState(object.category_id);
+  const [categories, setCategories] = useState([]);
 
 
+  const categoryItem = categories.map((item) =>{
+    return <option key={item.id} value={item.id} data-key={item.id} >{`${item.name} - ${item.material}`}</option>;
+  }
+  );
 
-  const updateStock = async() => {
+
+  const updateStock = async () => {
     URL = '/api/V1/ornament'
     const ornament = {
-      'id': object.id,
-      'name': name,
-      'weight': weight,
-      'wastage': wastage,
-      'making_charge': makingCharge
+      id: object.id,
+      name: name,
+      weight: weight,
+      wastage: wastage,
+      making_charge: makingCharge,
+      category_id: category_id,
     }
     const setting = {
       method: 'PUT',
       headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(ornament),
-  };
-    try{
-    const response = await fetch(URL, setting)
-    if (response.status === 200 ){
-      _updateStock(ornament)
-      handleClose()
-    }
-    }catch{}
+    };
+    try {
+      const response = await fetch(URL, setting)
+      if (response.status === 200) {
+        _updateStock(ornament)
+        handleClose()
+      }
+    } catch { }
     handleClose()
   }
-  const edit = <FontAwesomeIcon 
-  icon={faEdit} 
-  onClick={handleShow} />;
+  const edit = <FontAwesomeIcon
+    icon={faEdit}
+    onClick={handleShow} />;
 
 
   return (
@@ -91,6 +109,12 @@ export default function UpdateStock(props) {
                 onChange={(e) => setMakingCharge(e.target.value)}
               />
             </Form.Group>
+            <Form.Group controlId="exampleForm.ControlSelect1">
+              <Form.Label>Categories</Form.Label>
+              <Form.Control as="select" value={category_id} onChange={(e) => setCategory(e.target.value)}>
+                {categoryItem}
+              </Form.Control>
+            </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -106,5 +130,5 @@ export default function UpdateStock(props) {
   );
 }
 
-export default updateStock;
+export default UpdateStock;
 
