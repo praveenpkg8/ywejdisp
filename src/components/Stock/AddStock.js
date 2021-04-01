@@ -1,5 +1,5 @@
-import React, { Component, useState, useEffect } from "react";
-import { Modal, Button, Form, Dropdown } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import {  useSelector } from 'react-redux';
 import { selectCategoryList } from '../../features/categorySlice';
 

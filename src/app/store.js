@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../features/userSlice';
 import categoryReducer from '../features/categorySlice';
 import materialPriceReducer from '../features/materialPriceSlice';
+import cartReducer from '../features/cartSlice';
 
 
 const saveToLocalStorage = (state) => {
@@ -35,6 +36,7 @@ const store = configureStore({
         user: userReducer,
         categoryList: categoryReducer,
         material: materialPriceReducer,
+        cartList: cartReducer,
     }, preloadedState  
 } )
 store.subscribe(() => saveToLocalStorage(store.getState()))

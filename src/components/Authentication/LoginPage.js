@@ -17,7 +17,7 @@ const LoginPage = () => {
 
     const state = store.getState();
     const userState = state.user.user;
-    const isLoggedIn = userState._login;
+    const {_login: isLoggedIn} = userState;
     console.log(isLoggedIn)
     if (isLoggedIn){
         return <Redirect to='/'/>;

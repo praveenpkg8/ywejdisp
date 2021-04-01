@@ -22,7 +22,7 @@ const StockItem = (props) => {
   };
   const flag = true
 
-  const _updateCategory = (_object) => {
+  const _updateStock = (_object) => {
     setName(_object.name)
   }
   const deleteOrnament = async () => {
@@ -51,7 +51,7 @@ const StockItem = (props) => {
       <td>{makingCharge}</td>
       <td>{category}</td>
       <td>{material}</td>
-      <td><UpdateStock object={object} _updateCategory={_updateCategory} /></td>
+      <td><UpdateStock object={object} _updateStock={_updateStock} /></td>
       <td>{trash}</td>
     </tr>
   );

@@ -7,6 +7,8 @@ import Dashboard from '../components/Dashboard';
 import Stocks from '../components/Stock/Stock';
 import Category from '../components/Category/Category';
 import Cart from '../components/Cart/Cart';
+import Bill from '../components/Cart/Bill';
+
 
 
 import LoginPage from '../components/Authentication/LoginPage';
@@ -32,6 +34,8 @@ function RouteConfig() {
                         <Route path="/signup" exact component={SignUp} />
                         <Route path="/category" exact component={Category} />
                         <Route path="/cart" exact component={Cart} />
+                        <Route path="/bill" exact component={Bill} />
+
 
                     </Col>
                 </Row>

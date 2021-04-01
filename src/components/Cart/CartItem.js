@@ -1,26 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
-// import UpdateCategory from './UpdateCategory'
-// import UpdateStock from './UpdateStock';
-import { useDispatch, useSelector } from 'react-redux';
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useSelector } from 'react-redux';
 import {
-  updateGoldPrice, updateSilverPrice, updatePlatinumPrice,
-  updateDaimondPrice, selectGoldPrice, selectSilverPrice, 
-  selectPlatinumPrice, selectDaimondPrice
+    selectGoldPrice, selectSilverPrice,
+    selectPlatinumPrice, selectDaimondPrice
 } from '../../features/materialPriceSlice';
-import MaterialPrice from "../Category/MaterialPrice";
 
 const CartItem = (props) => {
     const { object } = props.object;
-    console.log(props);
-    const [id, setId] = useState(object.id);
-    const [name, setName] = useState(object.name);
-    const [weight, setWeight] = useState(object.weight);
-    const [wastage, setWastage] = useState(object.wastage);
-    const [makingCharge, setMakingCharge] = useState(object.making_charge);
-    const [category, setCategory] = useState(object.category_name);
-    const [material, setMaterial] = useState(object.category_material);
+    const { id, name, weight, wastage,
+        making_charge: makingCharge, category_name: category,
+        category_material: material } = object;
     const materialPriceDict = {
         GOLD: useSelector(selectGoldPrice),
         SILVER: useSelector(selectSilverPrice),
@@ -28,15 +19,28 @@ const CartItem = (props) => {
         DAIMOND: useSelector(selectDaimondPrice),
     }
     const materialPrice = materialPriceDict[material] * weight;
-    const makingPrice = materialPrice * (makingCharge/100)
-    const wastagePrice = materialPrice * (wastage/100)
+    const makingPrice = materialPrice * (makingCharge / 100)
+    const wastagePrice = materialPrice * (wastage / 100)
     const price = materialPrice + makingPrice + wastagePrice;
-    console.log(price);
-    console.log("material price", materialPrice)
-    console.log("making price", makingPrice);
-    console.log("wastage price", wastagePrice);
+    const flag = true
 
-
+    const deleteItem = async () => {
+        if (!flag) return
+    
+        try {
+          const URL = "/api/V1/ornament/" + object.id;
+          const response = await fetch(URL, setting);
+          flag = false;
+          if (response.status === 200){
+            deleteItem(object.id);
+            flag = true;
+          }
+        } catch {}
+    
+      };
+    const trash = <FontAwesomeIcon
+        icon={faTrash}
+        onClick={deleteItem} />;
     return (
         <tr>
             <td>{id}</td>
@@ -47,6 +51,7 @@ const CartItem = (props) => {
             <td>{category}</td>
             <td>{material}</td>
             <td>{price} Rs.</td>
+            <td>{trash}</td>
         </tr>
     );
 };
